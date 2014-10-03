@@ -18,5 +18,5 @@
 #
 execute 'bundle install' do
   user 'vagrant'
-  action 'bundle install --gemfile=/vagrant/Gemfile'
+  command 'bundle install --gemfile=/vagrant/Gemfile'
 end
