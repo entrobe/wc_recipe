@@ -16,7 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-execute 'bundle install' do
-  user 'vagrant'
-  command 'bundle install --gemfile=/vagrant/Gemfile'
-end
+
+# For some reason the command fails with file not found error if run on it's own 
+execute "echo 'bundle install...' && RBENV_VERSION=2.1.3 rbenv exec bundle install --gemfile=/vagrant/Gemfile && echo 'bundle install completed...'"
