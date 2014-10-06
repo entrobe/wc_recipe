@@ -17,5 +17,25 @@
 # limitations under the License.
 #
 
+#set proper env vars for db encoding
+ENV['LANGUAGE'] = ENV['LANG'] = ENV['LC_ALL'] = "en_US.UTF-8"
+include_recipe "postgresql::server"
+
+execute "create postgres user" do
+  guard = <<-EOH
+    psql -c "select * from pg_user where usename='admin'" | grep -c admin}
+    EOH
+  
+  code = <<-EOH
+   cat << EOF | sudo su postgres
+      psql
+      create user admin password 'password' createdb;
+      EOF
+    EOH
+  command code
+  not_if guard
+end
+
+
 # For some reason the command fails with file not found error if run on it's own 
-execute "echo 'bundle install...' && RBENV_VERSION=2.1.3 rbenv exec bundle install --gemfile=/vagrant/Gemfile && echo 'bundle install completed...'"
+execute "bundle install --gemfile=/vagrant/Gemfile"
